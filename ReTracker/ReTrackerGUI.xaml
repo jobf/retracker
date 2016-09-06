@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="ReTracker.ReTrackerGUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="394"
+             Height="Auto">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="TargetTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="X"
+                        Height="20"
+                        Width="20"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,5,0"
+                        Command="{Binding RemoveCommand}" />
+                <TextBlock Text="{Binding MachineName}" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <Label>Available target machines:</Label>
+
+        <ComboBox x:Name="names"
+                  ItemsSource="{Binding MachineNames}"
+                  SelectedItem="{Binding SelectedMachine}" />
+
+        <Button x:Name="addTarget"
+                Content="Add target"
+                Command="{Binding AddTargetCommand}" />
+        <ScrollViewer Height="240">
+            <ListBox x:Name="targets"
+                     ItemsSource="{Binding Targets}"
+                     ItemTemplate="{DynamicResource TargetTemplate}">
+            </ListBox>
+        </ScrollViewer>
+    </StackPanel>
+
+</UserControl>
