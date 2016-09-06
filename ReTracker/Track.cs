@@ -11,7 +11,7 @@ namespace ReTracker
         {
             get
             {
-                if (_note.Value == 255)
+                if (NoteOff())
                 {
                     return _lastNote;
                 }
@@ -45,7 +45,7 @@ namespace ReTracker
         public void Note(Note v)
         {
             _note = v;
-            _trigger = true;
+            _trigger = !NoteOff();
         }
 
         public void Volume(int v)
