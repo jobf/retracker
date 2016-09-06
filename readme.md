@@ -14,14 +14,14 @@ It's a very simple machine:
 
 * Save assignments
 * Disable target
-* Modify key map per track
+* Modify key map per target
 * Target other ReTracker instances
 
 ## Usage ##
 
 Only machines that accept MIDI notes can be targetted and you may need to enable MIDI via attributes on the target machine.
 
-Some machines simply don't work as targets. 
+Some machines simply don't work. 
 
 ### Add Target ###
 
