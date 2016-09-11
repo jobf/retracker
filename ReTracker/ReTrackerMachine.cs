@@ -20,7 +20,7 @@ namespace ReTracker
         private readonly Track[] _tracks = new Track[32];
         private BindingList<Target> _targets = new BindingList<Target>();
         private List<Target.State> _targetsToLoad;
-
+        
         public ReTrackerMachine(IBuzzMachineHost host)
         {
             _host = host;
@@ -30,10 +30,16 @@ namespace ReTracker
         }
 
         [ParameterDecl]
-        public void Note(Note v, int track) { _tracks[track].Note(v); }
+        public void Note(Note v, int track)
+        {
+            _tracks[track].Note(v);
+        }
 
         [ParameterDecl(MinValue = 0, MaxValue = 127, DefValue = 100)]
-        public void Velocity(int v, int track) { _tracks[track].Velocity(v); }
+        public void Velocity(int v, int track)
+        {
+            _tracks[track].Velocity(v);
+        }
 
         public void ImportFinished(IDictionary<string, string> machineNameMap)
         {
@@ -60,7 +66,7 @@ namespace ReTracker
                         {
                             if (tt != null)
                             {
-                                tt.SendNote(0, track.GetNote, track.GetVelocity);
+                                tt.SendNote(track.GetNote, track.GetVelocity);
                             }
                         }
                         track.ResetTrigger();
@@ -68,6 +74,8 @@ namespace ReTracker
                 }
             }
         }
+
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
 
