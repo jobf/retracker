@@ -2,7 +2,7 @@
 
 namespace ReTracker
 {
-    internal class Track
+    public class Track
     {
         private string _machineName;
         private Note _note;
@@ -13,6 +13,7 @@ namespace ReTracker
             {
                 if (NoteOff())
                 {
+                    _note.Value = (byte)_lastNote;
                     return _lastNote;
                 }
                 _lastNote = _note.ToMIDINote();
@@ -21,13 +22,18 @@ namespace ReTracker
         }
 
         private int _lastNote;
-
-
+        private byte _lastNoteValue;
         private bool _trigger;
         public bool ShouldTrigger { get { return _trigger; } }
 
-        private int _volume = 100;
-        public int VolumeGet { get { return _volume; } }
+        private int _velocity;
+        public int GetVelocityMIDI
+        {
+            get
+            {
+                return NoteOff() ? 0 : _velocity;
+            }
+        }
 
         public string MachineName
         {
@@ -42,19 +48,36 @@ namespace ReTracker
             }
         }
 
+        public Note GetNote
+        {
+            get
+            {
+                if (!NoteOff())
+                {
+                    _lastNoteValue = _note.Value;
+                }
+                return _note;
+            }
+        }
+        public int GetVelocity { get { return _velocity; } }
+
         public void Note(Note v)
         {
             _note = v;
-            _trigger = !NoteOff();
-        }
-
-        public void Volume(int v)
-        {
-            _volume = v;
             _trigger = true;
         }
-        
-        internal void ResetTrigger()
+
+        public void Velocity(int v)
+        {
+            _velocity = v;
+            if (NoteOff())
+            {
+                _note.Value = _lastNoteValue;
+            }
+            _trigger = true;
+        }
+
+        public void ResetTrigger()
         {
             _trigger = false;
         }

@@ -6,14 +6,24 @@ namespace ReTracker
 {
     public class TargetVm : INotifyPropertyChanged
     {
-        public TargetVm()
+        private readonly Target _model;
+        public TargetVm(Target model)
+        {
+            _model = model;
+            _init();
+        }
+
+        private void _init()
         {
             _removeCommand = new RelayCommand(o => { PropertyChanged.Raise(this, "RemoveCommand"); }, o => true);
+            PropertyChanged.Raise(this, "MachineName");
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
-        public string MachineName { get; set; }
+
+        public string MachineName { get { return _model.Name;  } }
        
-        private readonly ICommand _removeCommand;
+        private ICommand _removeCommand;
         public ICommand RemoveCommand
         {
             get
@@ -21,5 +31,6 @@ namespace ReTracker
                 return _removeCommand;
             }
         }
+
     }
 }

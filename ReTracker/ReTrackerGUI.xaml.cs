@@ -52,13 +52,13 @@ namespace ReTracker
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private string _selectedMachine;
+        private string _selectedMachineName;
         public string SelectedMachine
         {
-            get { return _selectedMachine; }
+            get { return _selectedMachineName; }
             set
             {
-                _selectedMachine = value;
+                _selectedMachineName = value;
                 PropertyChanged.Raise(this, "SelectedMachine");
             }
         }
@@ -102,6 +102,10 @@ namespace ReTracker
                 {
                     _machine.Graph.Buzz.Song.MachineAdded += _song_MachineAdded;
                     _machine.Graph.Buzz.Song.MachineRemoved += _song_MachineRemoved;
+                    foreach (IMachine machine in ManagedMachine.GetTargets())
+                    {
+                        _targets.Add(new TargetVm(new Target(machine)));
+                    }
                 }
             }
         }
@@ -140,18 +144,27 @@ namespace ReTracker
 
         private bool _canAddTarget()
         {
-            return !string.IsNullOrEmpty(_selectedMachine) && !_targets.Any(t => t.MachineName == _selectedMachine);
+            return !string.IsNullOrEmpty(_selectedMachineName) && !ManagedMachine.HasTarget(_selectedMachineName);
         }
 
         private void _addTarget()
         {
-            if (!_targets.Any(t => t.MachineName == _selectedMachine))
+            if (!_targets.Any(t => t.MachineName == _selectedMachineName))
             {
-                var target = new TargetVm {MachineName = _selectedMachine};
-                target.PropertyChanged += Target_PropertyChanged;
-                _targets.Add(target);
-                ManagedMachine.AddTarget(_selectedMachine);
-                PropertyChanged.Raise(this, "Targets");
+                var machine = _machine.Graph.Buzz.Song.Machines.SingleOrDefault(m => m.Name == _selectedMachineName);
+                if(machine != null)
+                {
+
+                    var targetModel = new Target(machine);
+                    ManagedMachine.AddTarget(targetModel);
+
+
+                    var targetView = new TargetVm(targetModel);
+                    targetView.PropertyChanged += Target_PropertyChanged;
+                    _targets.Add(targetView);
+
+                    PropertyChanged.Raise(this, "Targets");
+                }
             }
         }
 
