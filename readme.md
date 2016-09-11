@@ -1,4 +1,4 @@
-# ReTracker 0.3 (alpha) #
+# ReTracker 0.4 (alpha) #
 
 ReTracker is a plugin (machine) for [Jeskola Buzz](http://jeskola.net/buzz/).  It's a workflow utility for tracking peer note data.
 
@@ -21,6 +21,8 @@ It's a very simple machine:
 ## Usage ##
 
 Buzz song must be playing for notes to be sent to targets. 
+
+Don't edit patterns too fast or it crashes, sorry!
 
 ### Add Target ###
 
